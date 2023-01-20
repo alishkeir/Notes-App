@@ -15,11 +15,12 @@ const addNote = (title, body) => {
     const newTitle = title.trim().replace(/ +/g, ' ');
 
     const notes = getNotes();
-    const duplicateNotes = notes.filter(
-        (note) => note.title.toLowerCase() == newTitle.toLowerCase()
+
+    const duplicateNotes = notes.find(
+        (note) => note.title.toLowerCase() === newTitle.toLowerCase()
     );
 
-    if (duplicateNotes.length > 0) {
+    if (duplicateNotes) {
         console.log(chalk.red(`A note title "${newTitle}" is already taken`));
         return;
     }
@@ -30,6 +31,7 @@ const addNote = (title, body) => {
     });
 
     saveNotes(notes);
+
     console.log(chalk.green(`New note added!`));
 };
 
@@ -55,4 +57,19 @@ const removeNote = (title) => {
     console.log(chalk.green(`Note removed!`));
 };
 
-module.exports = { getNotes, addNote, removeNote };
+const listNotes = () => {
+    try {
+        const dataBuffer = fs.readFileSync('notes.json');
+        const dataJSON = dataBuffer.toString();
+        notesList = JSON.parse(dataJSON);
+
+        console.log(chalk.magenta.bold('\nYour Notes:'));
+        notesList.forEach((note) => {
+            console.log(`- ${note.title}`);
+        });
+    } catch (error) {
+        console.log(chalk.red('No notes Found!'));
+    }
+};
+
+module.exports = { listNotes, addNote, removeNote };

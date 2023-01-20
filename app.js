@@ -1,5 +1,5 @@
 const yargs = require('yargs');
-const { getNotes, addNote, removeNote } = require('./notes');
+const { listNotes, addNote, removeNote } = require('./notes');
 
 // Cerate add command
 yargs.command({
@@ -43,7 +43,7 @@ yargs.command({
     command: 'list',
     describe: 'List all notes',
     handler: () => {
-        console.log('Listing all notes');
+        listNotes();
     },
 });
 
