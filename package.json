@@ -17,7 +17,7 @@
     },
     "homepage": "https://github.com/alishkeir/Notes-App#readme",
     "dependencies": {
-        "chalk": "^5.2.0",
+        "chalk": "^4.1.2",
         "fs": "^0.0.1-security",
         "yargs": "^17.6.2"
     }

@@ -1,4 +1,5 @@
 const yargs = require('yargs');
+const { getNotes, addNote, removeNote } = require('./notes');
 
 // Cerate add command
 yargs.command({
@@ -17,8 +18,7 @@ yargs.command({
         },
     },
     handler: ({ title, body }) => {
-        console.log(title);
-        console.log(body);
+        addNote(title, body);
     },
 });
 
@@ -26,8 +26,15 @@ yargs.command({
 yargs.command({
     command: 'remove',
     describe: 'Remove a note',
-    handler: () => {
-        console.log('Removing a note');
+    builder: {
+        title: {
+            describe: 'Title of the note to be removed',
+            demandOption: true,
+            type: 'string',
+        },
+    },
+    handler: ({ title }) => {
+        removeNote(title);
     },
 });
 
