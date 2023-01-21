@@ -12,3 +12,7 @@
 	 - `node app.js list`
  - **To read a note**
 	 - `node app.js read --title "<your note title>"`
+ - **To edit a note** (you can update a note title, body, or both)
+	 - `node app.js edit --title "<your old note title>" --body "<your new note body>"`
+	 - `node app.js edit --title "<your old note title>" --newTitle "<your new note title>"`
+	 - `node app.js edit --title "<your old note title>" --newTitle "<your new note title>" --body "<your new note body>"`
