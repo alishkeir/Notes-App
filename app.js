@@ -1,5 +1,11 @@
 const yargs = require('yargs');
-const { listNotes, addNote, removeNote, readNote } = require('./notes');
+const {
+    listNotes,
+    addNote,
+    removeNote,
+    readNote,
+    editNote,
+} = require('./notes');
 
 // Cerate add command
 yargs.command({
@@ -60,6 +66,32 @@ yargs.command({
     },
     handler: ({ title }) => {
         readNote(title);
+    },
+});
+
+// create edit command
+yargs.command({
+    command: 'edit',
+    describe: 'Edit a note',
+    builder: {
+        title: {
+            describe: 'Title of the note to be edited',
+            demandOption: true,
+            type: 'string',
+        },
+        newTitle: {
+            describe: 'New title of the note',
+            demandOption: false,
+            type: 'string',
+        },
+        body: {
+            describe: 'New body of the note',
+            demandOption: false,
+            type: 'string',
+        },
+    },
+    handler: ({ title, newTitle, body }) => {
+        editNote(title, newTitle, body);
     },
 });
 

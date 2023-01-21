@@ -12,21 +12,21 @@ const getNotes = () => {
 };
 
 const addNote = (title, body) => {
-    const newTitle = title.trim().replace(/ +/g, ' ');
+    const noteTitle = title.trim().replace(/ +/g, ' ');
 
     const notes = getNotes();
 
     const duplicateNotes = notes.find(
-        (note) => note.title.toLowerCase() === newTitle.toLowerCase()
+        (note) => note.title.toLowerCase() === noteTitle.toLowerCase()
     );
 
     if (duplicateNotes) {
-        console.log(chalk.red(`A note title "${newTitle}" is already taken`));
+        console.log(chalk.red(`A note title "${noteTitle}" is already taken`));
         return;
     }
 
     notes.push({
-        title: newTitle,
+        title: noteTitle,
         body,
     });
 
@@ -41,11 +41,11 @@ const saveNotes = (notes) => {
 };
 
 const removeNote = (title) => {
-    const newTitle = title.trim().replace(/ +/g, ' ');
+    const noteTitle = title.trim().replace(/ +/g, ' ');
     const notes = getNotes();
 
     const updatedNotes = notes.filter(
-        (note) => note.title.toLowerCase() !== newTitle.toLowerCase()
+        (note) => note.title.toLowerCase() !== noteTitle.toLowerCase()
     );
 
     if (notes.length <= updatedNotes.length) {
@@ -63,26 +63,26 @@ const listNotes = () => {
         const dataJSON = dataBuffer.toString();
         notesList = JSON.parse(dataJSON);
 
-        console.log(chalk.magenta.bold('\nYour Notes:'));
+        console.log(chalk.magenta.bold('\nYour notes:'));
         notesList.forEach((note) => {
             console.log(`- ${note.title}`);
         });
     } catch (error) {
-        console.log(chalk.red('No notes Found!'));
+        console.log(chalk.red('No notes found!'));
     }
 };
 
 const readNote = (title) => {
-    const newTitle = title.trim().replace(/ +/g, ' ');
+    const noteTitle = title.trim().replace(/ +/g, ' ');
 
     const notes = getNotes();
 
     const note = notes.find(
-        (note) => note.title.toLowerCase() === newTitle.toLowerCase()
+        (note) => note.title.toLowerCase() === noteTitle.toLowerCase()
     );
 
     if (!note) {
-        console.log(chalk.red('Note not Found!'));
+        console.log(chalk.red('Note not found!'));
         return;
     }
 
@@ -92,4 +92,55 @@ const readNote = (title) => {
     console.log(chalk.cyan(note.body));
 };
 
-module.exports = { listNotes, addNote, removeNote, readNote };
+const editNote = (title, newTitle, body) => {
+    const noteTitle = title ? title.trim().replace(/ +/g, ' ') : '';
+    const newNoteTitle = newTitle ? newTitle.trim().replace(/ +/g, ' ') : '';
+    const newBody = body ? body.trim().replace(/ +/g, ' ') : '';
+
+    if (!noteTitle) {
+        console.log(chalk.red('Please provide a note title to update!'));
+        return;
+    }
+
+    if (!newNoteTitle && !newBody) {
+        console.log(chalk.red('Please provide a new note title or body!'));
+        return;
+    }
+
+    const notes = getNotes();
+
+    const note = notes.find(
+        (note) => note.title.toLowerCase() === noteTitle.toLowerCase()
+    );
+
+    if (!note) {
+        console.log(chalk.red('Note not found!'));
+        return;
+    }
+
+    for (let i in notes) {
+        if (notes[i].title.toLowerCase() === newNoteTitle.toLowerCase()) {
+            console.log(
+                chalk.red(`A note title "${newNoteTitle}" is already taken`)
+            );
+            return;
+        }
+    }
+
+    for (let j in notes) {
+        if (notes[j].title.toLowerCase() === noteTitle.toLowerCase()) {
+            if (newNoteTitle) {
+                notes[j].title = newNoteTitle;
+            }
+            if (newBody) {
+                notes[j].body = newBody;
+            }
+
+            saveNotes(notes);
+            console.log(chalk.green('Note updated!'));
+            return;
+        }
+    }
+};
+
+module.exports = { listNotes, addNote, removeNote, readNote, editNote };
