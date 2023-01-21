@@ -72,4 +72,24 @@ const listNotes = () => {
     }
 };
 
-module.exports = { listNotes, addNote, removeNote };
+const readNote = (title) => {
+    const newTitle = title.trim().replace(/ +/g, ' ');
+
+    const notes = getNotes();
+
+    const note = notes.find(
+        (note) => note.title.toLowerCase() === newTitle.toLowerCase()
+    );
+
+    if (!note) {
+        console.log(chalk.red('Note not Found!'));
+        return;
+    }
+
+    console.log(chalk.magenta.bold('\nTitle:'));
+    console.log(chalk.cyan(note.title));
+    console.log(chalk.magenta.bold('\nBody:'));
+    console.log(chalk.cyan(note.body));
+};
+
+module.exports = { listNotes, addNote, removeNote, readNote };

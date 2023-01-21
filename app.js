@@ -1,5 +1,5 @@
 const yargs = require('yargs');
-const { listNotes, addNote, removeNote } = require('./notes');
+const { listNotes, addNote, removeNote, readNote } = require('./notes');
 
 // Cerate add command
 yargs.command({
@@ -51,8 +51,15 @@ yargs.command({
 yargs.command({
     command: 'read',
     describe: 'Read a note',
-    handler: () => {
-        console.log('Reading a note');
+    builder: {
+        title: {
+            describe: 'Title of the note to be read',
+            demandOption: true,
+            type: 'string',
+        },
+    },
+    handler: ({ title }) => {
+        readNote(title);
     },
 });
 
